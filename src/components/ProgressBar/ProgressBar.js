@@ -21,28 +21,33 @@ const SIZES = {
 };
 const ProgressBar = ({ value, size }) => {
   const styles = SIZES[size];
-  return <Progress style={styles} max={100} value={value}></Progress>;
+  return (
+    <ProgressWrapper role='progressbar' style={styles} aria-valuemax={100} aria-valuenow={value}>
+      <ValueMask>
+        <ValueBar value={value}></ValueBar>
+      </ValueMask>
+    </ProgressWrapper>
+  );
 };
 
-const Progress = styled('progress')`
-  &[value] {
-    -webkit-appearance: none;
-    appearance: none;
+const ProgressWrapper = styled.div`
+  height: var(--height);
+  background-color: ${COLORS.transparentGray15};
+  border-radius: 8px;
+  box-shadow: inset 0px 2px 4px ${COLORS.transparentGray35};
+  padding: var(--padding);
+`;
 
-    height: var(--height);
+const ValueBar = styled.div`
+  background-color: ${COLORS.primary};
+  width: ${props => props.value}%;
+  height: 100%;
+`;
 
-    ::-webkit-progress-bar {
-      background-color: ${COLORS.transparentGray15};
-      border-radius: 8px;
-      box-shadow: inset 0px 2px 4px ${COLORS.transparentGray35};
-      padding: var(--padding);
-    }
-
-    ::-webkit-progress-value {
-      background-color: ${COLORS.primary};
-      border-radius: 4px 0px 0px 4px;
-    }
-  }
+const ValueMask = styled.div`
+  width: 100%;
+  height: 100%;
+  clip-path: inset(0 round 4px);
 `;
 
 export default ProgressBar;
