@@ -9,45 +9,51 @@ const SIZES = {
   large: {
     '--padding': '4px',
     '--height': '24px',
+    '--border-radius': '8px',
   },
   medium: {
     '--padding': '0px',
     '--height': '12px',
+    '--border-radius': '4px',
   },
   small: {
     '--padding': '0px',
     '--height': '8px',
+    '--border-radius': '4px',
   },
 };
 const ProgressBar = ({ value, size }) => {
   const styles = SIZES[size];
+  if (!styles) {
+    throw new Error(`Unknown size passed to ProgressBar: ${size}`);
+  }
   return (
     <ProgressWrapper role='progressbar' style={styles} aria-valuemax={100} aria-valuenow={value}>
       <ValueMask>
-        <ValueBar value={value}></ValueBar>
+        <ValueBar style={{ '--value': `${value}%` }}></ValueBar>
       </ValueMask>
+      <VisuallyHidden>{value}%</VisuallyHidden>
     </ProgressWrapper>
   );
 };
 
 const ProgressWrapper = styled.div`
-  height: var(--height);
   background-color: ${COLORS.transparentGray15};
-  border-radius: 8px;
+  border-radius: var(--border-radius);
   box-shadow: inset 0px 2px 4px ${COLORS.transparentGray35};
   padding: var(--padding);
 `;
 
 const ValueBar = styled.div`
+  height: var(--height);
   background-color: ${COLORS.primary};
-  width: ${props => props.value}%;
-  height: 100%;
+  width: var(--value);
+  border-radius: 4px 0px 0px 4px;
 `;
 
 const ValueMask = styled.div`
-  width: 100%;
-  height: 100%;
-  clip-path: inset(0 round 4px);
+  overflow: hidden;
+  border-radius: 4px;
 `;
 
 export default ProgressBar;
