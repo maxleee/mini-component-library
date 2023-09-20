@@ -13,42 +13,44 @@ const Select = ({ label, value, onChange, children }) => {
       <SelectElement value={value} onChange={onChange}>
         {children}
       </SelectElement>
-      <Icon id='chevron-down' size='20' strokeWidth='2' />
+      <Presentational>
+        {displayedValue}
+        <Icon id='chevron-down' size={24} strokeWidth={2} />
+      </Presentational>
     </SelectWrapper>
   );
 };
 
 const SelectWrapper = styled.div`
-  color: ${COLORS.gray700};
-  background-color: ${COLORS.transparentGray15};
-  border-radius: 8px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  padding-right: 16px;
-  width: fit-content;
-  :focus-within {
-    outline: -webkit-focus-ring-color 1px solid;
-  }
-  :hover {
-    select {
-      color: ${COLORS.black};
-    }
-    svg {
-      color: ${COLORS.black};
-    }
-  }
+  position: relative;
+  width: max-content;
 `;
 
 const SelectElement = styled.select`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+`;
+
+const Presentational = styled.div`
+  color: ${COLORS.gray700};
+  font-size: 1rem;
+  background-color: ${COLORS.transparentGray15};
+  border-radius: 8px;
   padding: 12px 16px;
-  border: none;
-  background-color: transparent;
-  transition: color 0.2s;
-  appearance: none;
-  color: inherit;
-  :focus-visible {
-    outline: none;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  ${SelectElement}:focus + & {
+    outline: 1px dotted #212121;
+    outline: 5px auto -webkit-focus-ring-color;
+  }
+  ${SelectElement}:hover + & {
+    color: ${COLORS.black};
   }
 `;
 export default Select;
